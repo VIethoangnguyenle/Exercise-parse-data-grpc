@@ -1,0 +1,118 @@
+
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+option java_package = "com.example.proto";
+
+message StockInfo {
+  string sender_comp_id = 1;           //ID người gửi. Nếu là message do HNX gửi thì giá trị là “HNX”
+  string symbol = 2;                   //Mã chứng khoán
+  double symbol_id = 3;                //Id chứng khoán
+  string board_code = 4;               //Mã bảng của chứng khoán
+  string trading_session_id = 5;       //Mã trạng thái giao dịch
+  string trad_ses_status = 6;          /*Trạng thái giao dịch:
+                                            = 0 Chưa bắt đầu.
+                                            = 1 Bình thường
+                                            = 2 Tạm dừng
+                                            = 3 Kết thúc nhận lệnh phiên hiện tại do RamdomEnd
+                                            = 4 Tạm dừng do Circuit Break
+                                            = 5 Phiên định kỳ sau Circuit Break
+                                            = 6 Chứng khoán đang Prolong
+                                            = 13 Kết thúc nhận lệnh của ngày giao dịch hiện tại
+                                            = 90 Thị trường đang ở trạng thái chờ nhận lệnh.
+                                            = 97 Đóng cửa thị trường.
+                                            */
+  int32 security_trading_status = 7;    /*Trạng thái chứng khoán:
+                                            = 0: Bình thường
+                                            = 1: Chứng khoán không được giao dịch trong ngày
+                                            = 2: Ngừng giao dịch
+                                            = 6: Hủy niêm yết
+                                            = 7: Niêm yết mới
+                                            = 8: Sắp hủy niêm yết
+                                            =10: Tạm ngừng giao dịch giữa phiên
+                                            = 25: Giao dịch đặc biệt
+                                            */
+  int32 listing_status = 8;              /*Tình trạng chứng khoán
+                                            =0: Bình thường
+                                            =2: Bị cảnh báo
+                                            =3: Bị kiểm soát
+                                            */
+  string security_type = 9;             /*Loại chứng khoán:
+                                            ST: Cổ phiếu
+                                            BO: Trái phiếu
+                                            MF: Chứng chỉ quỹ
+                                            EF: ETF
+                                            FU : Future
+                                            OP: Option
+                                            */
+  string issue_date = 10;               //Ngày phát hành theo định dạng yyyyMMdd
+  string issuer = 11;                   //Tổ chức phát hành
+  string security_desc = 12;            //Mô tả thêm về chứng khoán
+  int32 best_bid_price = 13;            //Giá đặt mua tốt nhất của GD khớp lệnh (lô chẵn)
+  int32 best_bid_qtty = 14;             //Khối lượng đặt mua tốt nhất của GD khớp lệnh (lô chẵn)
+  int32 best_offer_price = 15;          //Giá đặt bán tốt nhất của GD khớp lệnh (lô chẵn)
+  int32 best_offer_qtty = 16;           //Khối lượng đặt mua tốt nhất của GD khớp lệnh (lô chẵn)
+  double total_bid_qtty = 17;           //Tổng KL đặt mua của GD khớp lệnh lô chẵn (trừ kl sửa, hủy)
+  double total_offer_qtty = 18;         //Tổng KL đặt bán của GD khớp lệnh lô chẵn (trừ kl sửa, hủy)
+  int64 basic_price = 19;               //Giá tham chiếu ( nghiệp vụ)
+  int64 floor_price = 20;               //Giá sàn ( nghiệp vụ)
+  int64 ceiling_price = 21;             //Giá trần ( nghiệp vụ )
+  int64 floor_price_pt = 22;            //Giá sàn cho giao dịch thỏa thuận ngoài biên độ (nghiệp vụ)
+  int64 ceiling_price_pt = 23;          //Giá trần cho giao dịch thỏa thuận ngoài biên độ (nghiệp vụ)
+  int32 par_value = 24;                 //Mệnh giá chứng khoán
+  int64 match_price = 25;               //Giá khớp gần nhất của GD khớp lệnh lô chẵn
+  int32 match_qtty = 26;                //KL khớp gần của GD khớp lệnh lô chăn
+  int64 open_price = 27;                //Giá mở cửa ( nghiệp vụ )
+  int64 prior_open_price = 28;          //Giá mở cửa phiên giao dịch trước phiên giao dịch hiện tại
+  int64 close_price = 29;               //Giá đóng cửa ( nghiệp vụ )
+  int64 prior_close_price = 30;         //Giá đóng cửa phiên trước phiên giao dịch hiện tại
+  double total_volume_traded = 31;      //Tổng KL giao dịch của GD khớp lệnh và thỏa thuận (lô chẵn và lẻ)
+  double total_value_traded = 32;       //Tổng giá trị giao dịch của GD khớp lệnh và thỏa thuận (lô chẵn và lẻ)
+  int32 mid_px = 33;                    //Giá bình quân ( nghiệp vu)
+  string trading_date = 34;             //Ngày giao dịch hiện tại theo định dạng yyyyMMdd
+  string time = 35;                     //Thời gian theo định dạng HH:mm:ss
+  int32 trading_unit = 36;              //Đơn vị giao dịch nhỏ nhất
+  double total_listing_qtty = 37;       //Khối lượng niêm yết
+  int32 date_no = 38;                   //phiên giao dịch thứ ( kể từ ngày niêm yết)
+  string reference_status = 39;         /*Trạng thái thực hiện quyền ảnh hưởng tới giá chứng khoán:
+                                                0: Không xảy ra
+                                                1:Trả CT bằng tiền
+                                                2:Trả cổ tức bằng CP/CP thưởng
+                                                3: Phát hành CP cho cổ đông hiện hữu
+                                                4: Trả cổ tức bằng CP/CP thưởng,phát hành CP cho cổ đông hiện hữu
+                                                5: Trả cổ tức bằng tiền, bằng CP/CP thưởng, phát hành CP cho cổ đông hiện hữu
+                                                6: Niêm yết bổ sung
+                                                7: Giảm vốn
+                                                8: Trả cổ tức bằng tiền, trả cổ tức bằng CP/CP thưởng
+                                                9: Trả cổ tức bằng tiền, phát hành CP cho cổ đông hiện hữu
+                                                10: Thay đổi tỷ lệ Free Float
+                                                11: Họp đại cổ đông
+                                                */
+  int64 current_price = 40;              //Giá khớp dự kiến của GD khớp lệnh (lô chẵn)
+  int32 current_qtty = 41;               //Khối lượng khớp dự kiến của GD khớp lệnh (lô chẵn)
+  int64 highest_price = 42;              //Giá thực hiện cao nhất của GD khớp lệnh   (lô chẵn)
+  int64 lowest_price = 43;               //Giá thực hiện thấp nhất của GD khớp lệnh   (lô chẵn)
+  int64 prior_price = 44;                //Gía khớp lệnh của phiên trước đó. Chỉ tính với khớp lệnh thông thường.
+  double match_value = 45;               //Giá trị khớp lệnh gần nhất của GD khớp lệnh lô chẵn
+  int32 offer_count = 46;                //Tổng số lệnh đặt bán của GD khớp lệnh lô chẵn
+  int32 bid_count = 47;                  //Tổng số lệnh đặt mua của GD khớp lệnh lô chẵn
+  double nm_total_traded_qtty = 48;      //Tổng khối lượng giao dịch thông thường của GD khớp lệnh lô chẵn
+  double nm_total_traded_value = 49;     //Tổng giá trị giao dịch thông thường của GD khớp lệnh lô chẵn
+  double pt_match_qtty = 50;             //Khối lượng thực hiện gần nhất của giao dịch thỏa thuận  (lô chẵn và lẻ)
+  int64 pt_match_price = 51;             //Giá thực hiện gần nhất của giao dịch thỏa thuận  (lô chẵn và lẻ)
+  double pt_total_traded_qtty = 52;      //Tổng khối lượng của giao dịch thỏa thuận (lô chẵn và lẻ)
+  double pt_total_traded_value = 53;     //Tổng giá trị của giao dịch thỏa thuận (lô chẵn và lẻ)
+  double total_buy_trading_qtty = 54;    //Tổng khối lượng mua khớp của GD khớp lệnh và thỏa thuận (lô chẵn và lẻ)
+  int32 buy_count = 55;                  //Tổng số lệnh mua khớp của GD khớp lệnh và thỏa thuân (lô chẵn và lẻ)
+  double total_buy_trading_value = 56;   //Tổng giá trị mua khớp của GD khớp lệnh và thỏa thuận (lô chẵn và lẻ)
+  double total_sell_trading_qtty = 57;   //Tổng khối lượng bán khớp của GD khớp lệnh và thỏa thuân (lô chẵn và lẻ)
+  int32 sell_count = 58;                 //Tổng số lệnh bán khớp của GD khớp lệnh và thỏa thuân (lô chẵn và lẻ)
+  double total_sell_trading_value = 59;  //Tổng giá trị bán khớp của GD khớp lệnh và thỏa thuận (lô chẵn và lẻ)
+  double buy_foreign_qtty = 60;          //Tổng khối lượng mua khớp của NĐT NN. Áp dụng cho GD khớp lệnh và thỏa thuận (lô chẵn và lẻ)
+  double buy_foreign_value = 61;         //Tổng giá trị mua khớp của NĐTNN. Áp dụng cho GD khớp lệnh và thỏa thuận (lô chẵn và lẻ)
+  double sell_foreign_qtty = 62;         //Tổng khối lượng bán khớp của NĐT NN. Áp dụng cho GD khớp lệnh và thỏa thuận (lô chẵn và lẻ)
+  double sell_foreign_value = 63;        //Tổng giá trị bán khớp của NĐTNN. Áp dụng cho GD khớp lệnh và thỏa thuận (lô chẵn và lẻ)
+  int32 remain_foreign_qtty = 64;        //Số lượng còn lại cho phép NDTNN đặt lệnh mua
+  double total_bid_qtty_od = 65;         //Tổng KL đặt mua của GD khớp lệnh lô lẻ (trừ sửa, hủy)
+  double total_offer_qtty_od = 66;       //Tổng KL đặt bán của GD khớp lệnh lô lẻ (trừ sửa hủy)\
+}
